@@ -1,2 +1,0 @@
-# nakshay.github.io
-Portfolio
