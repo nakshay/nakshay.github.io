@@ -1,7 +1,7 @@
 ---
 layout: page
 title: About me
-subtitle: Why you'd want to go on a date with me
+subtitle: A little bit about me...
 published: true
 ---
 Hi, I am Akshay Naik, an Engineer who loves open source software and passionate about programming. I like to build useful things mainly code libraries and small utilities. Most of my work is open-sourced and available on [Github](github.com/nakshay).
