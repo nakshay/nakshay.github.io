@@ -2,15 +2,6 @@
 layout: page
 title: About me
 subtitle: Why you'd want to go on a date with me
+published: true
 ---
-
-My name is Inigo Montoya. I have the following qualities:
-
-- I rock a great mustache
-- I'm extremely loyal to my family
-
-What else do you need?
-
-### my history
-
-To be honest, I'm having some trouble remembering right now, so why don't you just watch [my movie](http://en.wikipedia.org/wiki/The_Princess_Bride_%28film%29) and it will answer **all** your questions.
+Hi, I am Akshay Naik, an Engineer who loves open source software and passionate about programming. I like to build useful things mainly code libraries and small utilities. Most of my work is open-sourced and available on [Github](github.com/nakshay).
