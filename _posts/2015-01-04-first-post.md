@@ -1,7 +1,8 @@
 ---
 layout: post
-title: First post!
+title: Hello World !
 image: /img/hello_world.jpeg
+published: true
 ---
 
-This is my first post, how exciting!
+First Blog Post!
