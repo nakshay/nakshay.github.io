@@ -25,7 +25,7 @@ The bottom line is process is the object in C++ and It has a binding object defi
 To find out which file ultimately going to execute your code is to find a file under directory [Node Source tree](https://github.com/nodejs/node/tree/master/src), mapping of file name and module is fairly easy, for example, `node_file.cc` for fs module and `node_http2.cc` for HTTP module and so on.
 you will see lines like ` env->SetMethod(target, 'stat', Stat);`  which says stat function is bound to Stat C++ function in the current file and this is how functions are mapped, certainly there is very complicated setup for all this to work but to answer my question this much information is enough. 
 
-But, After two years Node codebase is changed drastically and they have abstracted the way binding is exposed for calling. you can check out the old commit of Node repository, I have pulled old commit for you guys   [Node source tree (OLD)](https://github.com/nodejs/node/tree/ab8bf26994677a5f0823b3810668f6cfa18374d9) and [FS moudle source](https://github.com/nodejs/node/blob/ab8bf26994677a5f0823b3810668f6cfa18374d9/src/node_file.cc).  
+But, After two years Node codebase is changed drastically and they have abstracted the way binding is exposed for calling. you can check out the old commit of Node repository, I have pulled old commit for you guys   [Node source tree (OLD)](https://github.com/nodejs/node/tree/ab8bf26994677a5f0823b3810668f6cfa18374d9) and [FS module source](https://github.com/nodejs/node/blob/ab8bf26994677a5f0823b3810668f6cfa18374d9/src/node_file.cc).  
 
 
 
