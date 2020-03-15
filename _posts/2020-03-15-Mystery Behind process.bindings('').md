@@ -6,10 +6,6 @@ date: '2020-03-15'
 ---
 
 
-### The Mystery Behind process.bindings('')  
-
-
-
 
 Today I was going through my StackOverflow questions to see what are questions I asked in the past and found this old question about NodeJs [SO Question](https://stackoverflow.com/questions/45811559/how-to-find-a-source-file-used-in-process-binding-in-node-source-code), Which I asked when I was learning NodeJs first time. surprisingly two and a half years later question remains unanswered. 
 
