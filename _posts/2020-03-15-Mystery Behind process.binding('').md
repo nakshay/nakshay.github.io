@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Mystery Behind process.bindings('')...
+title: Mystery Behind process.binding('')...
 published: true
 date: '2020-03-15'
 ---
