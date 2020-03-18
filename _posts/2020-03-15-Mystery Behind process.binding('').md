@@ -11,7 +11,7 @@ Today I was going through my StackOverflow questions to see what are questions I
 
 This was the time when I was trying to understand how NodeJS works and reading about its internals, after googling for hours I understood this masterpiece is not just a Javascript library built on top of V8 but it has many components which work together to become a runtime. This was the first time when I got to know about how async works in computers, IO multiplexers, and libuv.  
 
-Even though I keep reading this stuff now and then for different languages and frameworks I work on I feel there is still more to know. I would suggest any newcomer to NodeJS or anyone who wants to learn async should read about IO multiplexing or at least docs about abstractions built on top of it like [Libuv](https://github.com/libuv/libuv) for NodeJs OR [MIO](https://github.com/tokio-rs/mio) for Rust, they have a lot of useful information and it's worth reading.
+Even though I keep reading this stuff now and then for different languages and frameworks I work on, I feel there is still more to know. I would suggest any newcomer to NodeJS or anyone who wants to learn async should read about IO multiplexing or at least docs about abstractions built on top of it like [Libuv](https://github.com/libuv/libuv) for NodeJs OR [MIO](https://github.com/tokio-rs/mio) for Rust, they have a lot of useful information and it's worth reading.
 
 Okay, that's enough chitchat lets get back to the topic, so as per normal programmer's habit I was digging through standard library function calls (_which are called core modules in NodeJS world_) to see how it works, and I reached the  source file of fs module and observed that each of the javascript function eventually calls the functions which are made on the binding object like [stat function call](https://github.com/nodejs/node/blob/ab8bf26994677a5f0823b3810668f6cfa18374d9/lib/fs.js#L882) and when I looked up from where it's coming it was coming from `const binding=process.binding('fs')` so what is it? I didn't have any idea about the structure of the Node project and never bothered to look at readme to understand, I just wanted to know about where it's coming so I decided to shamelessly ask a question on StackOverflow. seems nobody cared and even I also forgot since I was just playing around Node and not doing any serious work at that time.
 
@@ -40,4 +40,4 @@ Thanks for reading.
 
 [https://github.com/nodejs/node](https://github.com/nodejs/node)  
 [https://nodejs.org/en/docs/](https://nodejs.org/en/docs/)  
-[http://lanceball.com/process-bindings/#/](http://lanceball.com/process-bindings/#/)  
+[http://lanceball.com/process-bindings/#/](http://lanceball.com/process-bindings/#/)
