@@ -21,7 +21,7 @@ Some native properties are bound to the object here" --  Lance Ball in his [slid
 
 If that sounds too complicated, in simple words V8 is a javascript engine that allows us to execute javascript, it also helps to write an extension in C/C++ which can be exposed to javascript to call from OR you can think of it as glue code. Of course, it is much more than that and very very complicated.
 
-The bottom line is, the process is an object in C++ and It has a binding object defined which has various functions attached. Well we can assume that for now for sake of simplicity, I have very limited knowledge about C++ :(  
+The bottom line is, the process is an object written in C++ and It has a binding object defined, which has various functions attached. Well we can assume that for now for sake of simplicity, I have very limited knowledge about C++ :(  
 The way too find out which file ultimately going to execute your code is to find a file under directory [Node Source tree](https://github.com/nodejs/node/tree/master/src), mapping of file name and module is fairly easy, for example, `node_file.cc` for fs module and `node_http2.cc` for HTTP module and so on.
 you will see lines like `env->SetMethod(target, 'stat', Stat)`  which says stat function is bound to Stat C++ function in the current file and this is how functions are mapped, certainly there is very complicated setup for all this to work but to answer my question this much information is enough. 
 
