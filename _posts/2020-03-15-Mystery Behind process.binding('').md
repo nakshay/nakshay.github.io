@@ -17,7 +17,7 @@ Okay, that's enough chitchat lets get back to the topic, so as per normal progra
 
 **Finally, Time to reveal the mystery**. What happens is binding is "
 The process object is created in C++ using the V8 API
-Some native properties are bound to the object here" --  Lance Ball in his [slides](http://lanceball.com/process-bindings/#/), the link is below. phew...
+Some native properties are bound to the object here" --  Lance Ball in his [slides](http://lanceball.com/process-bindings/#/), the link is bel. phew...
 
 If that sounds too complicated, in simple words V8 is a javascript engine that allows us to execute javascript, it also helps to write an extension in C/C++ which can be exposed to javascript to call from OR you can think of it as glue code. Of course, it is much more than that and very very complicated.
 
