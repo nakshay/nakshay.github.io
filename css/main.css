@@ -786,3 +786,29 @@ pre {
   font-style: italic;
   font-size: 16px;
 }
+
+.logo {
+  font-weight: 800;
+  color: #404040;
+}
+
+.logo__cursor {
+  display:inline-block;
+  width:6px;
+  height:1.2rem;
+  background:#000000;
+  margin-left:3px;
+  border-radius:1px;
+  animation:cursor 1s infinite
+ }
+ @keyframes cursor {
+  0% {
+   opacity:0
+  }
+  50% {
+   opacity:1
+  }
+  100% {
+   opacity:0
+  }
+ }
