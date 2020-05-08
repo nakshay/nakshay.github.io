@@ -142,7 +142,7 @@ fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
 
 
 If you run above code by removing ```'a``` from the function signature compiler will yell at you with an error ```expected named lifetime parameter``` and adding ```'a``` everywhere doesn't either solve the problem. 
-Remember one important point annotating ```lifetime does not elongate the lifetime of a reference, It is just to give extra information to the compiler about refernce lifetime.```
+Remember one important point ```annotating lifetime does not elongate the lifetime of a reference, It is just to give extra information to the compiler about refernce lifetime.```
 
 
 If you replace the function body with the below code, the compiler will still complain.
