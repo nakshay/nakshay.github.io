@@ -25,7 +25,7 @@ If you have ever worked with C / C++ you must have heard a word called danging p
 Let's start with an example in C.
 
  
-```
+```c
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -55,7 +55,7 @@ Yeh... it's shocking to see the output line printing  123 which we are not even 
 
 Let's take a famous example from the rust book itself. 
 
-```
+```c
 fn main() {
     {
         let r;
@@ -70,7 +70,7 @@ fn main() {
 
 Of course, This code doesn’t compile and the rust compiler gives us a very detailed explanation of why.
 
-```
+```rust
 $ cargo run
    Compiling chapter10 v0.1.0 (file:///projects/chapter10)
 error[E0597]: `x` does not live long enough
@@ -94,7 +94,7 @@ To learn more, run the command again with --verbose.
 
 Here the Rust borrow checker kicks in and validates if all borrows are valid, below visualization from rust book will make it clear.
 
-```
+```rust
 fn main() {
     {
         let r;                // ---------+-- 'a
@@ -120,7 +120,7 @@ The syntax to specify the lifetime in rust is ``` 'a ``` instead of "a" you can 
 
 Let's see another example from rust book for lifetimes with functions.
 
-```
+```rust
 fn main() {
     let string1 = String::from("long string is long");
     let result;
@@ -147,7 +147,7 @@ Remember one important point ```annotating lifetime does not elongate the lifeti
 
 If you replace the function body with the below code, the compiler will still complain.
 
-```
+```rust
 fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
     x
 }
@@ -156,7 +156,9 @@ fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
 But Why?  Isn't x is a reference to string1 which has a longer lifetime? what's wrong here?
 
 Let's decipher below line one by one.   
-```fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {```
+```rust 
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+```
 
 The ```<'a>``` after the function name "longer" says function signature will have a single lifetime annotation that is ```'a```, then ```'a``` after parameter x and y says, both parameters have the same lifetime.  so rust takes the ```smallest``` of two if there are three, four, or more parameter with ```'a``` lifetime, the compiler will take the shortest lifetime of them.
 
@@ -170,11 +172,15 @@ The answer is ``` The lifetime of input parameters should be equal or greater th
 
 Let's modify it a little bit to give a compiler an idea that two are having different lifetimes and we want to return only one of them, with a longer lifetime. 
 
-```fn longest<'a,'b>(x: &'a str, y: &'b str) -> &'a str ```
+```rust
+ fn longest<'a,'b>(x: &'a str, y: &'b str) -> &'a str 
+ ```
 
 You could also remove the lifetime from parameter y since its never used or returned.
 
+```rust
 fn longest<'a>(x: &'a str, y: & str) -> &'a str  
+```
 
 ```This also shows you dont require lifetime annotation for every parameter```
 
