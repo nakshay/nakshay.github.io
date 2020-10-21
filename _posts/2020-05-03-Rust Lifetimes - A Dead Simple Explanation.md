@@ -5,7 +5,6 @@ published: true
 date: '2020-05-03'
 ---
 
-
 In today's post, I will be talking about "Rust Lifetimes" the most difficult topic almost everyone faces while learning Rust at the beginning. 
 
 If you don't know about [Rust](https://www.rust-lang.org/), It's a next-gen system programming language, very useful to build fast and reliable software. It has all features (pointers, low-level memory access, etc) that traditional system programming languages provide like C/ C++, but Rust also provides memory safety guarantees that high-level languages provide like Java, C#, Python, etc. and all that comes without the overhead of [Garbage Collector](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)) also without manual memory management.

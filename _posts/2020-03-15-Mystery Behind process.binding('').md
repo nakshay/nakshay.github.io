@@ -5,8 +5,6 @@ published: true
 date: '2020-03-15'
 ---
 
-
-
 Today I was going through my StackOverflow questions to see what are questions I asked in the past and found this old question about NodeJs [SO Question](https://stackoverflow.com/questions/45811559/how-to-find-a-source-file-used-in-process-binding-in-node-source-code), Which I asked when I was learning NodeJs first time. surprisingly two and a half years later question remains unanswered. 
 
 This was the time when I was trying to understand how NodeJS works and reading about its internals, after googling for hours I understood this masterpiece is not just a Javascript library built on top of V8 but it has many components which work together to become a runtime. This was the first time when I got to know about how async works in computers, IO multiplexers, and libuv.  

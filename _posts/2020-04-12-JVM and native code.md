@@ -5,8 +5,6 @@ published: true
 date: '2020-04-12'
 ---
 
-
-
 A few days ago one of my friends sent me an interesting blog post on how default [hashCode()](https://srvaroa.github.io/jvm/java/openjdk/biased-locking/2017/01/30/hashCode.html) works, the author explains how native code behind this method generates hashcode using different techniques. After reading this blog I started reading about `native` keyword before the hashCode() which does all this.
 
 All Java programmer knows that definition of such methods is implemented in native code (C/C++) but many of them are unsure how JVM links this native code at the run time, as there is no relation between java byte code and native machine code. Someone will say that's the magic of JNI but in the end, JNI also wants us to write some C++ code OR "glue code"  for it to work, so the question is still there, How JVM links this glue code which is written in another language than Java? 
