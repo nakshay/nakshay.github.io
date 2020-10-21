@@ -28,7 +28,7 @@ Thanks for reading.
 
 ### Update:
 
-JVM does not directly convert all code to the machine code, although there are some exceptions where code executed repeatedly is converted into machine code by JIT. I will be writing a another post to cover how interpreted languages are executed and how they communicate with the native code. Stay tunned.
+JVM does not directly convert all code to the machine code, although there are some exceptions where code executed repeatedly is converted into machine code by JIT. I will be writing another post to cover how interpreted languages are executed and how they communicate with the native code. Stay tunned.
 
 
 **References:**  
