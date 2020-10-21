@@ -23,6 +23,11 @@ So how JNA allow us to call native functions without writing the glue code which
 
 So at the end JVM converts its byte code to machine code and our glue code (JNI) provides an ABI for JVM for communication and that's how we can call native functions. 
 
+## Update:
+
+JVM does not directly convert all code to the machine code, although there are some exceptions where code executed repeatedly is converted into machine code by JIT. I will be writing a another post to cover how interpreted languages are executed and how they communicate with the native code. Stay tunned.
+
+
 Hopefully, that was an interesting read than regular JNI examples.
 
 Thanks for reading.
