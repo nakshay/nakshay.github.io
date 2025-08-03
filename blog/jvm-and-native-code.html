@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JVM and native code - Akshay Naik</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../index.html">Akshay Naik</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="../blog.html" class="nav-link">Blog</a></li>
+                <li><a href="../projects.html" class="nav-link">Projects</a></li>
+                <li><a href="../about.html" class="nav-link">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <article class="blog-post">
+            <div class="container">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">Apr 12, 2020</span>
+                    </div>
+                    <h1 class="post-title">JVM and native code (JNI, JNA, libffi)</h1>
+                </header>
+
+                <div class="post-content">
+                    <p>
+                        A few days ago one of my friends sent me an interesting blog post on how default <a href="https://srvaroa.github.io/jvm/java/openjdk/biased-locking/2017/01/30/hashCode.html">hashCode()</a> works, the author explains how native code behind this method generates hashcode using different techniques. After reading this blog I started reading about `native` keyword before the hashCode() which does all this.
+                    </p>
+
+                    <p>
+                        All Java programmer knows that definition of such methods is implemented in native code (C/C++) but many of them are unsure how JVM links this native code at the run time, as there is no relation between java byte code and native machine code. Someone will say that's the magic of JNI but in the end, JNI also wants us to write some C++ code OR "glue code" for it to work, so the question is still there, How JVM links this glue code which is written in another language than Java?
+                    </p>
+
+                    <p>
+                        There is another way to make native calls without the need of writing C++ glue code and that is <a href="https://github.com/java-native-access/jna">JNA</a>, we can use the native shared library and call its functions from Java, although JNA uses JNI under the hood the overhead of writing glue code is removed from java programmer which requires different expertise and is a way harder than writing Java code.
+                    </p>
+
+                    <p>
+                        What JNI actually does is, it asks us to declare the signature of a native function in our java code prefaced with a native keyword, so at the run time it can invoke the appropriate functions with correct parameters, passing the wrong number/type of argument will give you runtime errors. In short, JNI uses the calling convention that defines where the function arguments will be found and what will be their types. A calling convention also defines where will be the return type found so the caller can read it on completion of function execution.
+                    </p>
+
+                    <p>
+                        Defining this convention is called <a href="https://en.wikipedia.org/wiki/Application_binary_interface">ABI</a>. It's a contract between two binary programs to communicate with each other. So high-level languages like Java, C#, Python has to follow the ABI conventions so they can communicate with low-level languages like C, C++. You can imagine a similar thing happens when we use system calls. Whenever we read or write files/sockets from our code the programming languages internally make a system call to the kernel which are mostly written in C and that all happen because of ABI. Kernel/OS exposes ABI to other programs so they can call these system calls to get the work done.
+                    </p>
+
+                    <p>
+                        One can think ABI similar to the API which we use to build a Web application, We can literally call any API on the web if we follow the calling conventions, like HTTP methods, headers, parameters, etc. here callee does not need to know the caller and vice-versa.
+                    </p>
+
+                    <p>
+                        So how JNA allow us to call native functions without writing the glue code which we abide to write when using JNI? the answer is <a href="https://sourceware.org/libffi/">libffi</a>, libffi provides the interface by for various calling conventions to call functions from one language to another language also known as invoking a foreign function or FFI(foreign function interface), It's a very thin machine-dependent library which needs an extra layer of type conversion that its users must provide like JNA.
+                    </p>
+
+                    <p>
+                        So at the end JVM converts its byte code to machine code and our glue code (JNI) provides an ABI for JVM for communication and that's how we can call native functions.
+                    </p>
+
+                    <p>Hopefully, that was an interesting read than regular JNI examples.</p>
+
+                    <h2>Update</h2>
+
+                    <p>
+                        JVM does not directly convert all code to the machine code, although there are some exceptions where code executed repeatedly is converted into machine code by JIT. I will be writing another post to cover how interpreted languages are executed and how they communicate with the native code. Stay tuned.
+                    </p>
+
+                    <h2>References</h2>
+
+                    <ul>
+                        <li><a href="https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaNativeInterface.html">Java Native Interface Tutorial</a></li>
+                        <li><a href="https://www.techbeamers.com/write-a-simple-jna-program-in-java/">JNA Programming Guide</a></li>
+                        <li><a href="https://en.wikipedia.org/wiki/Foreign_function_interface">Foreign Function Interface</a></li>
+                        <li><a href="https://sourceware.org/libffi/">libffi Documentation</a></li>
+                    </ul>
+                </div>
+
+                <div class="post-footer">
+                    <a href="../blog.html" class="btn btn-secondary">← Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="mailto:akshay@example.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://twitter.com/akshaynaik" target="_blank" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/akshay-naik" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/nakshay" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

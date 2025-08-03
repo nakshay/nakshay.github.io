@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rust Lifetimes - A Dead Simple Explanation - Akshay Naik</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../index.html">Akshay Naik</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="../blog.html" class="nav-link">Blog</a></li>
+                <li><a href="../projects.html" class="nav-link">Projects</a></li>
+                <li><a href="../about.html" class="nav-link">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <article class="blog-post">
+            <div class="container">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">May 3, 2020</span>
+                    </div>
+                    <h1 class="post-title">Rust Lifetimes - A Dead Simple Explanation</h1>
+                </header>
+
+                <div class="post-content">
+                    <p>
+                        In today's post, I will be talking about "Rust Lifetimes" the most difficult topic almost everyone faces while learning Rust at the beginning.
+                    </p>
+
+                    <p>
+                        If you don't know about <a href="https://www.rust-lang.org/">Rust</a>, It's a next-gen system programming language, very useful to build fast and reliable software. It has all features (pointers, low-level memory access, etc) that traditional system programming languages provide like C/ C++, but Rust also provides memory safety guarantees that high-level languages provide like Java, C#, Python, etc. and all that comes without the overhead of <a href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)">Garbage Collector</a> also without manual memory management.
+                    </p>
+
+                    <p>
+                        Rust achieves this by using the special compiler features like ownership, borrow checker, and lifetimes. Ownership feature makes sure that there is always a single owner for each resource during program execution, Borrow checker takes care of transferring ownership, and lifetimes make sure there are no dangling references and all references remain valid.
+                    </p>
+
+                    <p>
+                        It's relatively easy to understand ownership and borrowing, the real trouble begins when compiler starts yelling at you for lifetimes. There are a ton of videos and blog post all over the internet that explains lifetimes but they all seems confusing to me at some point. I will attempt to explain lifetimes in the simplest possible way since I am also in the learning phase and can relate to other learner's mindset.
+                    </p>
+
+                    <p>
+                        Most of this will be a summary from the rust <a href="https://doc.rust-lang.org/book/title-page.html">book</a>. with some of my personal experience.
+                    </p>
+
+                    <h2>Dangling pointers</h2>
+
+                    <p>
+                        If you have ever worked with C / C++ you must have heard a word called danging pointers/ reference, it means a pointer you are holding is pointing the wrong location, i.e it is pointing to a memory location where no valid data is present or data present which you don't intend to point. It looks like a small bug but it can have serious consequences like data corruption, security risk, and so on.
+                    </p>
+
+                    <p>Let's start with an example in C.</p>
+
+                    <pre><code>#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+
+int* my_function() {
+    int value = 777;
+    return &value; // return the address of stack variable "value" = 777
+}
+
+void other_function() {
+    int value = 123; // allocates stack variable "value"=123
+}
+
+int main(){
+    int *ptr = my_function();
+    other_function();
+    printf("value returned from function is %d ",*ptr);
+}</code></pre>
+
+                    <p>
+                        I am sure you will start feeling good by reading C code after a long time but soon the smile on your face will disappear when you encounter the output line.
+                    </p>
+
+                    <p><strong>Output:</strong> <code>value returned from function is 123</code></p>
+
+                    <p>
+                        Yeh... it's shocking to see the output line printing 123 which we are not even returning from an "other_function" function. Okay now all of you serious about dangling pointers and their consequences, let's see how rust deals with dangling references.
+                    </p>
+
+                    <p>Let's take a famous example from the rust book itself.</p>
+
+                    <pre><code>fn main() {
+    {
+        let r;
+        {
+            let x = 5;
+            r = &x;
+        }
+        println!("r: {}", r);
+    }
+}</code></pre>
+
+                    <p>Of course, This code doesn't compile and the rust compiler gives us a very detailed explanation of why.</p>
+
+                    <pre><code>$ cargo run
+   Compiling chapter10 v0.1.0 (file:///projects/chapter10)
+error[E0597]: `x` does not live long enough
+  --&gt; src/main.rs:7:17
+   |
+7  |             r = &x;
+   |                 ^^ borrowed value does not live long enough
+8  |         }
+   | - `x` dropped here while still borrowed
+9  |
+10 |         println!("r: {}", r);
+   |                           - borrow later used here
+
+error: aborting due to previous error
+
+For more information about this error, try `rustc --explain E0597`.
+error: could not compile `chapter10`.
+
+To learn more, run the command again with --verbose.</code></pre>
+
+                    <p>
+                        Here the Rust borrow checker kicks in and validates if all borrows are valid, below visualization from rust book will make it clear.
+                    </p>
+
+                    <p>
+                        The Rust compiler ensures that all references are valid and prevents dangling references through its sophisticated lifetime system. This is one of the key features that makes Rust both safe and performant.
+                    </p>
+
+                    <h2>Conclusion</h2>
+
+                    <p>
+                        Rust lifetimes are a powerful feature that ensures memory safety without garbage collection. While they can be challenging to understand at first, they provide the foundation for Rust's safety guarantees.
+                    </p>
+
+                    <p>
+                        The key takeaway is that lifetimes help the Rust compiler understand how long references should be valid, preventing common memory safety issues that plague other systems programming languages.
+                    </p>
+                </div>
+
+                <div class="post-footer">
+                    <a href="../blog.html" class="btn btn-secondary">← Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="mailto:akshay@example.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://twitter.com/akshaynaik" target="_blank" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/akshay-naik" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/nakshay" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

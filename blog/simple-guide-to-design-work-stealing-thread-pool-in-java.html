@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple guide to design work stealing thread pool in java - Akshay Naik</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../index.html">Akshay Naik</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="../blog.html" class="nav-link">Blog</a></li>
+                <li><a href="../projects.html" class="nav-link">Projects</a></li>
+                <li><a href="../about.html" class="nav-link">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <article class="blog-post">
+            <div class="container">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">Dec 15, 2020</span>
+                        <span class="post-category">Java</span>
+                    </div>
+                    <h1 class="post-title">Simple guide to design work stealing thread pool in java</h1>
+                </header>
+
+                <div class="post-content">
+                    <p>
+                        Work-stealing thread pools are a powerful concurrency pattern that can significantly improve 
+                        the performance of parallel applications. In this post, we'll explore how to implement a 
+                        work-stealing thread pool in Java from scratch.
+                        Checkout implementation <a href="https://github.com/nakshay/wstp">here</a> if you are interested in code.
+                    </p>
+
+                    <h2>What is Work Stealing?</h2>
+                    <p>
+                        Work stealing is a scheduling strategy used in parallel computing where idle processors 
+                        "steal" work from busy processors. This helps balance the workload across all available 
+                        threads and improves overall system performance.
+                    </p>
+
+                    <h2>Key Components</h2>
+                    <p>
+                        A work-stealing thread pool consists of several key components:
+                    </p>
+                    <ul>
+                        <li><strong>Worker Threads:</strong> Each thread has its own work queue</li>
+                        <li><strong>Work Queues:</strong> Double-ended queues for storing tasks</li>
+                        <li><strong>Stealing Logic:</strong> Algorithm for redistributing work</li>
+                        <li><strong>Task Submission:</strong> Mechanism for adding new tasks</li>
+                    </ul>
+
+                    <h2>Example</h2>
+                    <p>
+                        Here is how you can use the work stealing thread pool.
+                    </p>
+
+                    <pre><code>
+package net.nakshay.wstp;
+
+import net.nakshay.wstp.internal.pool.WSTPFactory;
+import net.nakshay.wstp.internal.service.WSTPService;
+                        
+import java.util.Random;
+                    
+public class Main {
+
+    public static void main(String[] args) throws InterruptedException {
+    WSTPService service = WSTPFactory.newThreadPool(5);
+    for (int i = 0; i <1000;i++) {
+        service.runJob(new Task(i));
+    }
+
+    }
+}
+
+class Task implements Runnable {
+    private final int counter;
+
+    Task(int counter) {
+        this.counter = counter;
+    }
+    @Override
+    public void run() {
+        try {
+            Thread.sleep(new Random().nextInt(1000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Running task "+ counter + " By Thread "+
+            Thread.currentThread().getId());
+    }
+}
+                    </code></pre>
+
+                    <h2>Benefits</h2>
+                    <p>
+                        Work-stealing thread pools offer several advantages:
+                    </p>
+                    <ul>
+                        <li>Better load balancing across threads</li>
+                        <li>Reduced contention and synchronization overhead</li>
+                        <li>Improved cache locality</li>
+                        <li>Adaptive to varying task sizes</li>
+                    </ul>
+
+                    <h2>Conclusion</h2>
+                    <p>
+                        Work-stealing thread pools are an excellent choice for applications with irregular 
+                        workloads or varying task sizes. They provide automatic load balancing and can 
+                        significantly improve performance in parallel applications.
+                    </p>
+
+                    <p>
+                        The implementation shown here is a simplified version. Production implementations 
+                        like Java's ForkJoinPool include additional optimizations and features for better 
+                        performance and reliability.
+                    </p>
+                </div>
+
+                <div class="post-footer">
+                    <a href="../blog.html" class="btn btn-secondary">← Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="mailto:akshay@example.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://twitter.com/akshaynaik" target="_blank" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/akshay-naik" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/nakshay" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html> 

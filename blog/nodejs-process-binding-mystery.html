@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NodeJS - Mystery Behind process.binding() - Akshay Naik</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="../index.html">Akshay Naik</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="../blog.html" class="nav-link">Blog</a></li>
+                <li><a href="../projects.html" class="nav-link">Projects</a></li>
+                <li><a href="../about.html" class="nav-link">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <article class="blog-post">
+            <div class="container">
+                <header class="post-header">
+                    <div class="post-meta">
+                        <span class="post-date">Mar 15, 2020</span>
+                    </div>
+                    <h1 class="post-title">NodeJS - Mystery Behind process.binding()</h1>
+                </header>
+
+                <div class="post-content">
+                    <p>
+                        Today I was going through my StackOverflow questions to see what are questions I asked in the past and found this old question about NodeJs <a href="https://stackoverflow.com/questions/45811559/how-to-find-a-source-file-used-in-process-binding-in-node-source-code">SO Question</a>, Which I asked when I was learning NodeJs first time. surprisingly two and a half years later question remains unanswered.
+                    </p>
+
+                    <p>
+                        This was the time when I was trying to understand how NodeJS works and reading about its internals, after googling for hours I understood this masterpiece is not just a Javascript library built on top of V8 but it has many components which work together to become a runtime. This was the first time when I got to know about how async works in computers, IO multiplexers, and libuv.
+                    </p>
+
+                    <p>
+                        Even though I keep reading this stuff now and then for different languages and frameworks I get to work on, I feel there is still more to know. I would suggest any newcomer to NodeJS or anyone who wants to learn async should read about IO multiplexing or at least docs about abstractions built on top of it like <a href="https://github.com/libuv/libuv">Libuv</a> for NodeJs OR <a href="https://github.com/tokio-rs/mio">MIO</a> for Rust, they have a lot of useful information and it's worth reading.
+                    </p>
+
+                    <p>
+                        Okay, that's enough chitchat lets get back to the topic, so as per normal programmer's habit I was digging through standard library function calls (<em>which are called core modules in NodeJS world</em>) to see how it works, and I reached the source file of fs module and observed that each of the javascript function eventually calls the functions which are made on the binding object like <a href="https://github.com/nodejs/node/blob/ab8bf26994677a5f0823b3810668f6cfa18374d9/lib/fs.js#L882">stat function call</a> and when I looked up from where it's coming it was coming from `const binding=process.binding('fs')` so what is it? I didn't have any idea about the structure of the Node project and never bothered to look at readme to understand, I just wanted to know about where it's coming so I decided to shamelessly ask a question on StackOverflow. seems nobody cared and even I also forgot since I was just playing around Node and not doing any serious work at that time.
+                    </p>
+
+                    <h2>Finally, Time to reveal the mystery</h2>
+
+                    <p>
+                        What happens is binding is "The process object is created in C++ using the V8 API. Some native properties are bound to the object here" -- Lance Ball in his <a href="http://lanceball.com/process-bindings/#/">slides</a>. phew...
+                    </p>
+
+                    <p>
+                        If that sounds too complicated, in simple words V8 is a javascript engine that allows us to execute javascript, it also helps to write an extension in C/C++ which can be exposed to javascript to call from OR you can think of it as glue code. Of course, it is much more than that and very very complicated.
+                    </p>
+
+                    <p>
+                        The bottom line is, the process is an object written in C++ and It has a binding object defined, which has various functions attached. Well we can assume that for now for sake of simplicity, I have very limited knowledge about C++ :(
+                    </p>
+
+                    <p>
+                        The way to find out which file ultimately going to execute your code is to find a file under directory <a href="https://github.com/nodejs/node/tree/master/src">Node Source tree</a>, mapping of file name and module is fairly easy, for example, `node_file.cc` for fs module and `node_http2.cc` for HTTP module and so on. you will see lines like `env->SetMethod(target, 'stat', Stat)` which says stat function is bound to Stat C++ function in the current file and this is how functions are mapped, certainly there is very complicated setup for all this to work but to answer my question this much information is enough.
+                    </p>
+
+                    <p>
+                        But, After two years Node codebase is changed drastically and they have abstracted the way binding is exposed for calling. you can check out the old commit of Node repository, I have pulled old commit for you guys <a href="https://github.com/nodejs/node/tree/ab8bf26994677a5f0823b3810668f6cfa18374d9">Node source tree (OLD)</a> and <a href="https://github.com/nodejs/node/blob/ab8bf26994677a5f0823b3810668f6cfa18374d9/src/node_file.cc">FS module source</a>.
+                    </p>
+
+                    <p>Hopefully, you got at least some idea about how this mysterious process.binding() works.</p>
+
+                    <h2>References</h2>
+
+                    <ul>
+                        <li><a href="https://github.com/nodejs/node">Node.js GitHub Repository</a></li>
+                        <li><a href="https://nodejs.org/en/docs/">Node.js Documentation</a></li>
+                        <li><a href="http://lanceball.com/process-bindings/#/">Lance Ball's Process Bindings Slides</a></li>
+                    </ul>
+                </div>
+
+                <div class="post-footer">
+                    <a href="../blog.html" class="btn btn-secondary">← Back to Blog</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="social-links">
+                    <a href="mailto:akshay@example.com" class="social-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://twitter.com/akshaynaik" target="_blank" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/akshay-naik" target="_blank" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/nakshay" target="_blank" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html> 
